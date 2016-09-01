@@ -14,7 +14,8 @@ output:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(
   echo = FALSE,
-  message = FALSE 
+  message = FALSE,
+  cache = TRUE
   )
 ```
 
@@ -27,6 +28,7 @@ library(ggmap)
 library(DT)
 library(png)
 library(lubridate)
+library(tidyr)
 ```
 
 ```{r aux_func }
@@ -117,7 +119,7 @@ Visit: [linkernetworks.com](http://linkernetworks.com/)
 
 ## 我的怪獸強嗎？
 
-```{r atk_vs_def, cache=TRUE}
+```{r atk_vs_def}
 
 plot_2_axis <- function(x_axis, y_axis, icon_size = c(10, 10)) {
   pokemons %>% 
@@ -139,23 +141,34 @@ plot_2_axis("BaseAttack", "BaseDefense")
 
 ## 我的怪獸耐打嗎？
 
-```{r atk_vs_sta, cache=TRUE}
+```{r atk_vs_sta}
 plot_2_axis("BaseAttack", "BaseStamina", icon_size=c(10, 20))
 ```
 
 ## 我的怪獸能活多久？
 
-```{r def_vs_sta, cache=TRUE}
+```{r def_vs_sta}
 plot_2_axis("BaseDefense", "BaseStamina", icon_size = c(10, 25))
 ```
 
+## 誰需要丟更多球？
+
+```{r CaptureRate}
+plot_2_axis("BaseCaptureRate", "PkMn",  icon_size = c(0.03, 5))
+```
+
+## 誰最容易跑？
+
+```{r FleeRate}
+plot_2_axis("BaseFleeRate", "PkMn",  icon_size = c(0.03, 5)) +  annotate("text", x = 0.95, y = 55, label = "Abra: 0.99")
+```
 
 # 對神奇寶貝的身體很好奇？{data-background="images/appraise.jpg"}
 
 
 ## 種族間體重、身高分布如何？
 
-```{r weight_vs_height, cache=TRUE}
+```{r weight_vs_height}
 ash <- readPNG("images/Ash_Ketchum_DP.png")
 banana <- readPNG("images/banana.png")
 giraffe <- readPNG("images/giraffe.png")
@@ -194,7 +207,7 @@ pokemons %>%
 
 ## 身高體重的關係
 
-```{r weight_height_relationship, cache=TRUE}
+```{r weight_height_relationship}
 subjects_custom <- pokemon_subjects %>%
   filter(!is.na(pokemon_id))%>%
   left_join(pokemon_names, by=c("pokemon_id"="index")) %>%
@@ -296,7 +309,7 @@ subjects_df %>%
 Tier 代表出現頻率小數點後幾個零
 </aside>
 
-```{r pokemon_freq, cache=TRUE}
+```{r pokemon_freq}
 tier_df <- pm_freq %>%
   mutate(log_freq = -log10(freq)) %>%
   mutate(Tier_of_Rareness=floor(log_freq)) %>%
@@ -340,7 +353,7 @@ pm_count_by_hour %>%
 
 ## 個別怪獸的偏好嗎？
 
-```{r freq_vs_hour, cache=TRUE}
+```{r freq_vs_hour}
 pm_freq_with_hour <- pm_count_by_hour %>%
   group_by(pokemonId) %>%
   mutate(freq= cnt/sum(cnt))
@@ -364,7 +377,7 @@ plot
 
 ## 誰不合群？
 
-```{r outliers, cache=TRUE}
+```{r outliers}
 top3_freq <- pm_freq_with_hour %>%
   group_by(hour_created) %>% {
     top <- top_n(., 3, wt = freq)
@@ -396,7 +409,7 @@ plot +
 
 ## 看圖說故事
 
-```{r gastly_and_clefairy, cache=TRUE}
+```{r gastly_and_clefairy}
 pm_freq_5 <- pm_freq_with_hour %>%
   filter(pokemonId %in% c(1, 4, 7, 35, 92))
 
@@ -417,7 +430,7 @@ plot+geom_vline(xintercept = 19)+mapply(
 
 ## 鬼和皮皮並沒有晚上較多
 
-```{r gastly_and_clefairy_closer, cache=TRUE}
+```{r gastly_and_clefairy_closer}
 pm_freq_5 %>%
   ggplot(aes(
     x=hour_created,
@@ -444,7 +457,7 @@ pm_freq_5 %>%
 
 ## 皮皮晚上也沒特別的分佈
 
-```{r clefairy_distribution, cache=TRUE}
+```{r clefairy_distribution}
 clefairy %>%
   select(-dup_cnt) %>%
   mutate(
@@ -467,7 +480,7 @@ clefairy %>%
 
 ## 重生點？卡比獸你說說看
 
-```{r snorlax_respawn, cache=TRUE}
+```{r snorlax_respawn}
 snorlax_taipei <- snorlax %>%
   filter(
     longitude>121.415265 & latitude> 24.944514, 
@@ -506,7 +519,7 @@ plt(snorlax_taipei)
 
 ## 重生點？快龍你說說看
 
-```{r dragonite_respawn, cache=TRUE}
+```{r dragonite_respawn}
 
 dragonite_taipei <- dragonite %>%
   filter(
@@ -544,7 +557,7 @@ plt(dragonite_taipei)
 
 ## 還沒用到的 Pokeshop 資料
 
-```{r unused_forts, cache=TRUE}
+```{r unused_forts}
 forts %>% qmplot(x=longitude, y=latitude, data= .)
 ```
 
