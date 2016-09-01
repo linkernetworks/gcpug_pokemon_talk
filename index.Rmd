@@ -201,9 +201,9 @@ pokemons %>%
 4. 卡比獸雖然比較難追，但是一不小心人可能會比隆隆岩重哦
 </aside>
 
-## 身高體重正常嗎？
+---
 
-<img src="https://pbs.twimg.com/media/CoMBZivXgAA7znY.jpg" height="100%">
+<img src="https://pbs.twimg.com/media/CoMBZivXgAA7znY.jpg" height="600px">
 
 ## 身高體重的關係
 
