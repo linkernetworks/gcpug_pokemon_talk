@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="author" content="Chin-Cheng Liang" />
+  <meta name="dcterms.date" content="2016-08-25" />
+  <title>Gotta Research ’Em All</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="index_files/reveal.js-3.3.0/css/reveal.css"/>
+
+
+
+<link rel="stylesheet" href="index_files/reveal.js-3.3.0/css/theme/simple.css" id="theme">
+
+
+  <!-- some tweaks to reveal css -->
+  <style type="text/css">
+    .reveal h1 { font-size: 2.0em; }
+    .reveal h2 { font-size: 1.5em;  }
+    .reveal h3 { font-size: 1.25em;	}
+    .reveal h4 { font-size: 1em;	}
+
+    .reveal .slides>section,
+    .reveal .slides>section>section {
+      padding: 0px 0px;
+    }
+
+
+
+    .reveal table {
+      border-width: 1px;
+      border-spacing: 2px;
+      border-style: dotted;
+      border-color: gray;
+      border-collapse: collapse;
+      font-size: 0.7em;
+    }
+
+    .reveal table th {
+      border-width: 1px;
+      padding-left: 10px;
+      padding-right: 25px;
+      font-weight: bold;
+      border-style: dotted;
+      border-color: gray;
+    }
+
+    .reveal table td {
+      border-width: 1px;
+      padding-left: 10px;
+      padding-right: 25px;
+      border-style: dotted;
+      border-color: gray;
+    }
+
+  </style>
+
+    <style type="text/css">code{white-space: pre;}</style>
+
+    <!-- Printing and PDF exports -->
+    <script>
+      var link = document.createElement( 'link' );
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = window.location.search.match( /print-pdf/gi ) ? 'index_files/reveal.js-3.3.0/css/print/pdf.css' : 'index_files/reveal.js-3.3.0/css/print/paper.css';
+      document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+    <!--[if lt IE 9]>
+    <script src="index_files/reveal.js-3.3.0/lib/js/html5shiv.js"></script>
+    <![endif]-->
+
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+<section>
+    <h1 class="title">Gotta Research ’Em All</h1>
+    <h2 class="author">Chin-Cheng Liang</h2>
+    <h3 class="date">August 25, 2016</h3>
+</section>
+
+<section class="slide level2 dark-bg" data-background="images/banner.jpg">
+<h1>關於我</h1>
+<ul>
+<li>Linkernetworks 資料科學家</li>
+<li>Taipei Ethereum meetup organizer</li>
+<li>偶爾 Python &amp; R 爬蟲講師</li>
+</ul>
+</section>
+<section id="about-linkernetworks" class="slide level2 dark-bg" data-background="images/banner.jpg">
+<h1>About Linkernetworks</h1>
+<ul>
+<li>NFV over DCOS</li>
+<li>IOT &amp; ML</li>
+<li>Founded Boston</li>
+</ul>
+<p><img src="images/linker_logo.png" class="normalized" width="300px"></p>
+<p>Visit: <a href="http://linkernetworks.com/">linkernetworks.com</a></p>
+</section>
+<section id="lab" class="slide level2 dark-bg" data-background="images/poke_lab.jpg">
+<h1>其實那只是我現實世界的身份</h1>
+<p><img src="images/XY_Scientist_M.png" class="normalized" width="500px"></p>
+</section>
+<section><section class="titleslide slide level1" data-background="images/Super_Sucker.png"><h1>我們的研究資源</h1></section><section class="slide level2">
+<h1>天眼通</h1>
+<p><img src="images/goradar.png" alt="" /></p>
+<aside class="notes">
+<ul>
+<li>圖狗給我們神奇寶貝出現的時間地點</li>
+<li>資料取得機制不明</li>
+<li>多重抽樣誤差</li>
+</ul>
+</aside>
+</section><section id="robo-trainer" class="slide level2">
+<h1>Robo-Trainer</h1>
+<p><img src="images/gofbot.png" alt="" /></p>
+<aside class="notes">
+<ul>
+<li>豐富 config 光這就可以生一個 talk 了</li>
+<li>樣本資料、shop 資料</li>
+<li>docker 幫你包好好</li>
+<li>機器人只做一件事：抓波波</li>
+</ul>
+</aside>
+</section><section class="slide level2">
+<h1>研究資源整理</h1>
+<p><img src="images/arch.png" alt="" /></p>
+<aside class="notes">
+<ul>
+<li>top down 資料價值, bottom up 資料資產</li>
+<li>事實沒有這張圖這麼漂亮</li>
+<li>意外的發現與落失</li>
+</ul>
+</aside>
+</section></section>
+<section><section class="titleslide slide level1" data-background="images/training.gif"><h1>對神奇寶貝的強度感到好奇</h1></section><section class="slide level2">
+<h1>我的怪獸強嗎？</h1>
+<p><img src="index_files/figure-revealjs/atk_vs_def-1.png" width="768" /></p>
+<aside class="notes">
+在 Pokemon go 裡，神奇寶貝物種間的強度受三樣基礎值支配：攻擊、防禦、耐力。各挑兩軸做成三張圖。越往右上角的代表越強，在最右上角的若非神獸，就是常常待在道館塔上的那些。
+</aside>
+</section><section class="slide level2">
+<h1>我的怪獸耐打嗎？</h1>
+<p><img src="index_files/figure-revealjs/atk_vs_sta-1.png" width="768" /></p>
+</section><section class="slide level2">
+<h1>我的怪獸能活多久？</h1>
+<p><img src="index_files/figure-revealjs/def_vs_sta-1.png" width="768" /></p>
+</section></section>
+<section><section class="titleslide slide level1" data-background="images/appraise.jpg"><h1>對神奇寶貝的身體很好奇？</h1></section><section class="slide level2">
+<h1>種族間體重、身高分布如何？</h1>
+<p><img src="index_files/figure-revealjs/weight_vs_height-1.png" width="768" /></p>
+<aside class="notes">
+<ol type="1">
+<li>注意座標取過 log 了，好處是左下角的不會擠在一團，但是右上角大量級的神奇寶貝相對高度重量不太好感覺。</li>
+<li>鬼系那兩隻居然進化成耿鬼後會從沒重量變成 40 公斤！（耿鬼在小智腳邊，迷唇姐背後）。一個傳說是耿鬼是鬼斯通附身在皮可西身上，因此得到重量。</li>
+<li>大岩蛇全身都是石頭，可是比長頸鹿高卻又比長頸鹿輕</li>
+<li>卡比獸雖然比較難追，但是一不小心人可能會比隆隆岩重哦</li>
+</ol>
+</aside>
+</section><section class="slide level2">
+<h1>身高體重正常嗎？</h1>
+<p><img src="https://pbs.twimg.com/media/CoMBZivXgAA7znY.jpg" height="100%"></p>
+</section><section class="slide level2">
+<h1>身高體重的關係</h1>
+<p><img src="index_files/figure-revealjs/weight_height_relationship-1.png" width="768" /></p>
+</section><section class="slide level2">
+<h1>看看波波，因為我抓得特別多</h1>
+<p><img src="index_files/figure-revealjs/pidgey_weight_height-1.png" width="768" /></p>
+<aside class="notes">
+<ol type="1">
+<li>沒有比雕的資料，但是照波波的資料線性外插，會看到 0.07m 0.01 公斤的波波嗎？</li>
+</ol>
+</aside>
+</section><section class="slide level2">
+<h1>身高體重與強度有關嗎？</h1>
+<p><img src="index_files/figure-revealjs/weight_height_cp-1.png" width="768" /></p>
+<aside class="notes">
+Note: 身高體重有相關性，身高越高體重越重。與 cp, hp 並無明顯相關性
+</aside>
+</section><section class="slide level2">
+<h1>身高體重與個體值有關嗎？</h1>
+<p><img src="index_files/figure-revealjs/weight_height_iv-1.png" width="768" /></p>
+</section></section>
+<section><section class="titleslide slide level1" data-background="images/beitou.jpg"><h1>寶可夢在台灣</h1></section><section class="slide level2">
+<h1>傳說中的城鄉差距長相如何？</h1>
+<iframe src="sightings.html" width="100%" height="500px" allowtransparency="true">
+</iframe>
+<aside class="notes">
+<ul>
+<li>台北、台中、台南怪獸密度多</li>
+<li>抽樣日期 8/24 ~ 8/25</li>
+</ul>
+</aside>
+</section><section class="slide level2">
+<h1>推薦閱讀</h1>
+<p><a href="http://www.u-acg.com/archives/10614">從《INGRESS》到《Pokémon Go》：虛與實的階級隔閡與城鄉落差</a></p>
+<blockquote>
+<p>親自體驗過 PMGO 的玩家一定會發現， PMGO 是一款城鄉差距十分嚴重的遊戲，遊戲中維繫玩家日常運作的主要虛擬設施：補給站（POKÉSTOP）及道館（GYM），其於都市的分布數量及密度都遠大於偏鄉地區，進而無形中造成玩家之間的城鄉與階級隔閡，這在多數手機遊戲中並不常見，而造成該結果之原因，則要溯及構成 PMGO 的數據來源－《INGRESS》 。</p>
+</blockquote>
+</section><section class="slide level2">
+<h1>什麼怪獸最稀有？</h1>
+<aside class="notes">
+Tier 代表出現頻率小數點後幾個零
+</aside>
+<p><img src="index_files/figure-revealjs/pokemon_freq-1.png" width="768" /></p>
+</section><section class="slide level2">
+<h1>怪獸都在什麼時間出現呢？</h1>
+<p><img src="index_files/figure-revealjs/sightings_hour_count-1.png" width="768" /></p>
+<aside class="note">
+<ul>
+<li>和人類的作息差不多啊！！！</li>
+<li>這代表 Go radar 抓人類資料？</li>
+<li>代表 PokemonGo 晚上降低怪獸量？</li>
+</ul>
+</aside>
+</section><section class="slide level2">
+<h1>個別怪獸的偏好嗎？</h1>
+<p><img src="index_files/figure-revealjs/freq_vs_hour-1.png" width="768" /></p>
+<aside class="note">
+<ul>
+<li>大致和人類的作息差不多</li>
+<li>上下面有特別突出的怪獸</li>
+</ul>
+</aside>
+</section><section class="slide level2">
+<h1>誰不合群？</h1>
+<p><img src="index_files/figure-revealjs/outliers-1.png" width="768" /></p>
+</section><section class="slide level2">
+<h1>聽說晚上比較抓得到鬼和皮皮？</h1>
+<p><a href="http://twinfinite.net/2016/07/pokemon-go-day-night-affect-what-pokemon-find-catch/">Pokemon GO: Day &amp; Night Affect What Pokemon You Find</a></p>
+<blockquote>
+<p>For example, Pokemon such as Gastly and Clefairy will only come out mainly during the late night hours, in keeping with their lore. On the other hand Pokemon like Squirtle, Bulbasaur and Charmander will wander around primarily during the day hours.</p>
+</blockquote>
+<aside class="note">
+且御三家容易白天出現
+</aside>
+</section><section class="slide level2">
+<h1>看圖說故事</h1>
+<p><img src="index_files/figure-revealjs/gastly_and_clefairy-1.png" width="768" /></p>
+<aside class="note">
+<ul>
+<li>網友實測：<a href="https://www.reddit.com/r/pokemongo/comments/4rgfwd/daynight_cycle_research/">夜間在 19:00 發生</a></li>
+<li>稀有度最底層兩 tier 的怪物</li>
+</ul>
+</aside>
+</section><section class="slide level2">
+<h1>鬼和皮皮並沒有晚上較多</h1>
+<p><img src="index_files/figure-revealjs/gastly_and_clefairy_closer-1.png" width="768" /></p>
+<aside class="note">
+<ul>
+<li>無明顯晚上出沒率高</li>
+<li>需進一步驗證</li>
+</ul>
+</aside>
+</section><section class="slide level2">
+<h1>皮皮晚上也沒特別的分佈</h1>
+<p><img src="index_files/figure-revealjs/clefairy_distribution-1.png" width="768" /></p>
+</section><section class="slide level2">
+
+<p><img src="images/psyduck_meme.png" alt="" /></p>
+</section><section class="slide level2">
+<h1>重生點？卡比獸你說說看</h1>
+<p><img src="index_files/figure-revealjs/snorlax_respawn-1.png" width="768" /></p>
+</section><section class="slide level2">
+
+<iframe src="snorlax_map.html" width="100%" height="500px" allowtransparency="true">
+</iframe>
+</section><section class="slide level2">
+<h1>重生點？快龍你說說看</h1>
+<p><img src="index_files/figure-revealjs/dragonite_respawn-1.png" width="768" /></p>
+</section><section class="slide level2">
+
+<iframe src="dragonite_map.html" width="100%" height="500px" allowtransparency="true">
+</iframe>
+</section></section>
+<section><section id="behind-the-scene" class="titleslide slide level1" data-background="images/Mecha-Meowthinator.png"><h1>Behind The Scene</h1></section><section id="pouring-data-to-bigquery" class="slide level2">
+<h1>Pouring data to BigQuery</h1>
+<p><img src="images/bq.png" alt="" /></p>
+</section><section id="handling-pokegoradar" class="slide level2">
+<h1>Handling Pokegoradar</h1>
+<ul>
+<li>一堆人宣稱在台灣看到北美限定的牛</li>
+<li>Pro tip: Trust no players</li>
+<li>Pro pro tip: Trust only deviceId</li>
+</ul>
+<p><img src="images/Tauros.png" alt="" /></p>
+</section><section id="-r-" class="slide level2">
+<h1>一堆 R 視窗</h1>
+<p><img src="images/rstudios.png" alt="" /></p>
+</section></section>
+<section><section class="titleslide slide level1" data-background="images/epic_fail.png"><h1>未竟之業</h1></section><section id="-pokeshop-" class="slide level2">
+<h1>還沒用到的 Pokeshop 資料</h1>
+<p><img src="index_files/figure-revealjs/unnamed-chunk-1-1.png" width="768" /></p>
+</section><section class="slide level2" data-background="images/advance_bot.png">
+<h1>無所不在的機器人</h1>
+<ul>
+<li>台北市櫻花牌冷氣視覺化</li>
+<li>道館勢力視覺化</li>
+</ul>
+</section><section class="slide level2">
+<h1>還有好多問題</h1>
+<ul>
+<li>實驗設計：先進化 or 先升級</li>
+<li>pokeshop 與 怪獸出現率 的關係？</li>
+<li>怎樣撒花能夠聚集一波人潮？</li>
+</ul>
+</section></section>
+<section><section class="titleslide slide level1"><h1>參考資料</h1></section><section class="slide level2">
+<h1>工具</h1>
+<ul>
+<li>Poke Radar: <a href="https://www.pokemonradargo.com" class="uri">https://www.pokemonradargo.com</a></li>
+<li>PokemonGo-Bot: <a href="https://github.com/PokemonGoF/PokemonGo-Bot" class="uri">https://github.com/PokemonGoF/PokemonGo-Bot</a></li>
+<li>資料集套件：</li>
+<li><a href="https://github.com/ChihChengLiang/pokemongor" class="uri">https://github.com/ChihChengLiang/pokemongor</a></li>
+<li><a href="https://github.com/ChihChengLiang/pmbq" class="uri">https://github.com/ChihChengLiang/pmbq</a></li>
+<li>可達鴨產生器： <a href="http://bit.ly/2blYbs6" class="uri">http://bit.ly/2blYbs6</a></li>
+</ul>
+</section><section class="slide level2">
+<h1>圖</h1>
+<ul>
+<li>我們的研究資源: <a href="http://bulbapedia.bulbagarden.net/wiki/File:Super_Sucker.png" class="uri">http://bulbapedia.bulbagarden.net/wiki/File:Super_Sucker.png</a></li>
+<li>對神奇寶貝強度感到好奇： <a href="http://rebellion.nerdfitness.com/index.php?/topic/56248-vengefulpear-goes-for-the-boulderbadge/" class="uri">http://rebellion.nerdfitness.com/index.php?/topic/56248-vengefulpear-goes-for-the-boulderbadge/</a></li>
+<li>身高體重正常嗎？: <a href="https://pbs.twimg.com/media/CoMBZivXgAA7znY.jpg" class="uri">https://pbs.twimg.com/media/CoMBZivXgAA7znY.jpg</a></li>
+<li>Handling Pokegoradar</li>
+<li><a href="https://www.ptt.cc/bbs/PokeMon/M.1470491064.A.151.html">[PMGO] 關於PMGO雷達</a></li>
+<li><a href="http://www.twword.com/wiki/%E8%82%AF%E6%B3%B0%E7%BE%85">http://www.twword.com/wiki/%E8%82%AF%E6%B3%B0%E7%BE%85</a></li>
+<li>bigquery 抓的</li>
+<li>藍隊隊長： <a href="http://i.imgur.com/pXAaSx3.jpg" class="uri">http://i.imgur.com/pXAaSx3.jpg</a></li>
+<li>北投： <a href="https://www.youtube.com/watch?v=MoYjVTbLWyo" class="uri">https://www.youtube.com/watch?v=MoYjVTbLWyo</a></li>
+<li>Behind The Scene: <a href="http://bulbapedia.bulbagarden.net/wiki/File:Mecha-Meowthinator.png" class="uri">http://bulbapedia.bulbagarden.net/wiki/File:Mecha-Meowthinator.png</a></li>
+</ul>
+</section></section>
+    </div>
+  </div>
+
+  <script src="index_files/reveal.js-3.3.0/lib/js/head.min.js"></script>
+  <script src="index_files/reveal.js-3.3.0/js/reveal.js"></script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        // Push each slide change to the browser history
+        history: true,
+        // Vertical centering of slides
+        center: false,
+        // Transition style
+        transition: 'default', // none/fade/slide/convex/concave/zoom
+        // Transition style for full page slide backgrounds
+        backgroundTransition: 'default', // none/fade/slide/convex/concave/zoom
+
+        // Optional reveal.js plugins
+        dependencies: [
+          { src: 'index_files/reveal.js-3.3.0/plugin/notes/notes.js', async: true },
+        ]
+      });
+    </script>
+  <!-- dynamically load mathjax for compatibility with self-contained -->
+  <script>
+    (function () {
+      var script = document.createElement("script");
+      script.type = "text/javascript";
+      script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+      document.getElementsByTagName("head")[0].appendChild(script);
+    })();
+  </script>
+
+<script>
+  (function() {
+    if (window.jQuery) {
+      Reveal.addEventListener( 'slidechanged', function(event) {  
+        window.jQuery(event.previousSlide).trigger('hidden');
+        window.jQuery(event.currentSlide).trigger('shown');
+      });
+    }
+  })();
+</script>
+
+<script>
+ Reveal.initialize({
+    // Optional reveal.js plugins
+    dependencies: [
+        { src: 'libs/reveal.js-3.2.0/plugin/zoom-js/zoom.js', async: true },
+        { src: 'libs/reveal.js-3.2.0/plugin/markdown/marked.js', async: true },
+        { src: 'libs/reveal.js-3.2.0/plugin/notes/notes.js', async: true }
+    ]
+});
+</script>
+<style>
+  .titleslide > h1 {
+    color:white;
+    -webkit-text-stroke: 1px black;
+  }
+  .dark-bg h1,.dark-bg li, .dark-bg h3, .dark-bg p, .dark-bg a{
+    color:white;
+  }
+  #lab h1{
+    -webkit-text-stroke: 1px black;
+  }
+  .reveal section img.normalized{
+    background:none;
+    border:none;
+    box-shadow:none;
+  }
+</style>
+
+  </body>
+</html>

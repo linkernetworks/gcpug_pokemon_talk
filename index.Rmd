@@ -1,0 +1,584 @@
+---
+title: "Gotta Research 'Em All"
+author: "Chin-Cheng Liang"
+date: "August 25, 2016"
+output: 
+  revealjs::revealjs_presentation:
+    self_contained: false
+    includes:
+      #in_header: libs/header.html
+      after_body: libs/plugins.html
+    reveal_plugins: ["notes"]
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  message = FALSE 
+  )
+```
+
+```{r import, message=FALSE}
+library(magrittr)
+library(dplyr)
+library(pokemongor)
+library(pmbq)
+library(ggmap)
+library(DT)
+library(png)
+library(lubridate)
+```
+
+```{r aux_func }
+annotate_img <- function(img, x_center, y_center, width, height) {
+    annotation_raster(
+      img,
+      xmin=x_center-width/2,
+      xmax=x_center+width/2,
+      ymin=y_center-height/2,
+      ymax=y_center+height/2)
+}
+annotate_icon <- function(pokemonId, x_center, y_center, width, height) {
+  pokemon_icon <- paste0("icons/", pokemonId, ".png") %>% readPNG
+  annotate_img(pokemon_icon, x_center, y_center, width, height)
+}
+
+plot_pokemons <- function(x_coords, y_coords, icon_size = c(10, 10)) {
+  mapply(
+    annotate_icon,
+    pokemons$PkMn,
+    x_coords,
+    y_coords,
+    icon_size[1],
+    icon_size[2]
+    )
+}
+
+pokemons %<>% mutate(PokedexHeightCM= PokedexHeightM*100)
+```
+
+
+## 關於我 {class="dark-bg" data-background="images/banner.jpg"}
+
+- Linkernetworks 資料科學家
+- Taipei Ethereum meetup organizer
+- 偶爾 Python & R 爬蟲講師
+
+## About Linkernetworks {class="dark-bg" data-background="images/banner.jpg"}
+
+- NFV over DCOS
+- IOT & ML
+- Founded Boston
+
+<img src="images/linker_logo.png" class="normalized" width="300px">
+
+Visit: [linkernetworks.com](http://linkernetworks.com/)
+
+## 其實那只是我現實世界的身份 {id="lab" class="dark-bg" data-background="images/poke_lab.jpg"}
+
+
+<img src="images/XY_Scientist_M.png" class="normalized" width="500px">
+
+
+# 我們的研究資源 {data-background="images/Super_Sucker.png"}
+
+## 天眼通
+
+![](images/goradar.png)
+
+<aside class="notes">
+- 圖狗給我們神奇寶貝出現的時間地點
+- 資料取得機制不明
+- 多重抽樣誤差
+</aside>
+
+## Robo-Trainer
+
+![](images/gofbot.png)
+
+<aside class="notes">
+- 豐富 config 光這就可以生一個 talk 了
+- 樣本資料、shop 資料
+- docker 幫你包好好
+- 機器人只做一件事：抓波波
+</aside>
+
+## 研究資源整理
+
+![](images/arch.png)
+
+<aside class="notes">
+- top down 資料價值, bottom up 資料資產
+- 事實沒有這張圖這麼漂亮
+- 意外的發現與落失
+</aside>
+
+# 對神奇寶貝的強度感到好奇 {data-background="images/training.gif"}
+
+## 我的怪獸強嗎？
+
+```{r atk_vs_def, cache=TRUE}
+
+plot_2_axis <- function(x_axis, y_axis, icon_size = c(10, 10)) {
+  pokemons %>% 
+  ggplot(aes_string(x= x_axis, y = y_axis)) +
+  geom_point() + 
+  plot_pokemons(
+    pokemons[[x_axis]],
+    pokemons[[y_axis]],
+    icon_size
+    )
+}
+plot_2_axis("BaseAttack", "BaseDefense")
+
+```
+
+<aside class="notes">
+在 Pokemon go 裡，神奇寶貝物種間的強度受三樣基礎值支配：攻擊、防禦、耐力。各挑兩軸做成三張圖。越往右上角的代表越強，在最右上角的若非神獸，就是常常待在道館塔上的那些。
+</aside>
+
+## 我的怪獸耐打嗎？
+
+```{r atk_vs_sta, cache=TRUE}
+plot_2_axis("BaseAttack", "BaseStamina", icon_size=c(10, 20))
+```
+
+## 我的怪獸能活多久？
+
+```{r def_vs_sta, cache=TRUE}
+plot_2_axis("BaseDefense", "BaseStamina", icon_size = c(10, 25))
+```
+
+
+# 對神奇寶貝的身體很好奇？{data-background="images/appraise.jpg"}
+
+
+## 種族間體重、身高分布如何？
+
+```{r weight_vs_height, cache=TRUE}
+ash <- readPNG("images/Ash_Ketchum_DP.png")
+banana <- readPNG("images/banana.png")
+giraffe <- readPNG("images/giraffe.png")
+
+pokemons %>%
+  ggplot(aes(x = PokedexWeightKg, y = PokedexHeightCM)) +
+  geom_point() +
+  scale_x_log10(limits = c(NA,1400)) +
+  scale_y_log10() +
+  geom_vline(xintercept=43.1) +
+  geom_hline(yintercept=165) +
+  annotate_img(ash, log10(43.1), log10(165), 0.2, 0.2) +
+  annotate_img(banana, log10(0.15), log10(20), 0.2, 0.1) +
+  annotate_img(giraffe, log10(828), log10(517), 0.2, 0.2) +
+  plot_pokemons(
+    log10(pokemons$PokedexWeightKg),
+    log10(pokemons$PokedexHeightCM),
+    icon_size = c(0.14, 0.1)) +
+  annotate("text", x = 43.1, y = 250, label = "Ash 165cm, 43Kg") +
+  annotate("text", x = 210, y = 1100, label = "Onix 880cm, 210Kg") +
+  annotate("text", x = 850, y = 800, label = "Giraffe ♀ \n517cm, 828Kg") +
+  annotate("text", x= 0.15, y = 220, label = "Haunter\n160cm, 0.1Kg") +
+  annotate("text", x= 0.15, y = 25, label = "Banana\n20cm, 0.15Kg")
+```
+
+<aside class="notes">
+1. 注意座標取過 log 了，好處是左下角的不會擠在一團，但是右上角大量級的神奇寶貝相對高度重量不太好感覺。
+2. 鬼系那兩隻居然進化成耿鬼後會從沒重量變成 40 公斤！（耿鬼在小智腳邊，迷唇姐背後）。一個傳說是耿鬼是鬼斯通附身在皮可西身上，因此得到重量。
+3. 大岩蛇全身都是石頭，可是比長頸鹿高卻又比長頸鹿輕
+4. 卡比獸雖然比較難追，但是一不小心人可能會比隆隆岩重哦
+</aside>
+
+## 身高體重正常嗎？
+
+<img src="https://pbs.twimg.com/media/CoMBZivXgAA7znY.jpg" height="100%">
+
+## 身高體重的關係
+
+```{r weight_height_relationship, cache=TRUE}
+subjects_custom <- pokemon_subjects %>%
+  filter(!is.na(pokemon_id))%>%
+  left_join(pokemon_names, by=c("pokemon_id"="index")) %>%
+  select(pokemon_id, name, weight_kg, height_m) %>%
+  filter(pokemon_id %in% c(16,19,13, 58))
+
+subjects_custom %>%
+  ggplot(aes(x= weight_kg, y = height_m, color=name)) +
+  geom_point() +
+  geom_smooth(method=lm, se=FALSE) +
+  mapply(
+    annotate_icon,
+    subjects_custom$pokemon_id,
+    subjects_custom$weight_kg,
+    subjects_custom$height_m,
+    2,
+    0.1
+    )+
+  ylim(0,1)
+```
+
+## 看看波波，因為我抓得特別多
+
+```{r pidgey_weight_height}
+subjects_custom_closeup<- subjects_custom %>% filter(pokemon_id ==16)
+subjects_custom_closeup %>%
+  ggplot(aes(x= weight_kg, y = height_m, color=name)) +
+  geom_point() +
+  geom_smooth(method=lm, se=FALSE) +
+  mapply(
+    annotate_icon,
+    subjects_custom_closeup$pokemon_id,
+    subjects_custom_closeup$weight_kg,
+    subjects_custom_closeup$height_m,
+    0.1,
+    0.02
+    ) +
+  xlim(0, 4)+
+  ylim(0,0.5)
+```
+
+<aside class="notes">
+1. 沒有比雕的資料，但是照波波的資料線性外插，會看到 0.07m 0.01 公斤的波波嗎？
+</aside>
+
+
+## 身高體重與強度有關嗎？
+
+```{r weight_height_cp}
+subjects_df <- pokemon_subjects %>%
+  filter(pokemon_id==16) %>%
+  mutate(
+    iv= (individual_attack + individual_defense +
+           individual_stamina)/15
+    ) %>%
+  select(
+    height_m, weight_kg, cp, stamina_max, iv,
+    individual_attack, individual_defense, individual_stamina
+    )
+
+subjects_df %>%
+  select(height_m, weight_kg, cp, stamina_max) %>%
+  pairs
+```
+
+<aside class="notes">
+Note:
+身高體重有相關性，身高越高體重越重。與 cp, hp 並無明顯相關性
+</aside>
+
+## 身高體重與個體值有關嗎？
+
+```{r weight_height_iv}
+subjects_df %>%
+  select(height_m, weight_kg, iv) %>%
+  pairs
+```
+
+# 寶可夢在台灣 {data-background="images/beitou.jpg"}
+
+## 傳說中的城鄉差距長相如何？
+
+<iframe src="sightings.html" width=100% height=500px allowtransparency="true"> </iframe>
+
+<aside class="notes">
+- 台北、台中、台南怪獸密度多
+- 抽樣日期 8/24 ~ 8/25
+</aside>
+
+## 推薦閱讀
+
+[從《INGRESS》到《Pokémon Go》：虛與實的階級隔閡與城鄉落差](http://www.u-acg.com/archives/10614)
+
+> 親自體驗過 PMGO 的玩家一定會發現， PMGO 是一款城鄉差距十分嚴重的遊戲，遊戲中維繫玩家日常運作的主要虛擬設施：補給站（POKÉSTOP）及道館（GYM），其於都市的分布數量及密度都遠大於偏鄉地區，進而無形中造成玩家之間的城鄉與階級隔閡，這在多數手機遊戲中並不常見，而造成該結果之原因，則要溯及構成 PMGO 的數據來源－《INGRESS》 。
+
+## 什麼怪獸最稀有？
+
+<aside class="notes">
+Tier 代表出現頻率小數點後幾個零
+</aside>
+
+```{r pokemon_freq, cache=TRUE}
+tier_df <- pm_freq %>%
+  mutate(log_freq = -log10(freq)) %>%
+  mutate(Tier_of_Rareness=floor(log_freq)) %>%
+  arrange(desc(Tier_of_Rareness), desc(log_freq)) %>%
+  group_by(Tier_of_Rareness) %>%
+  mutate(Rank_in_Tier=row_number()) %>%
+  ungroup()
+
+tier_df %>% ggplot(aes(x=Rank_in_Tier, y=Tier_of_Rareness)) +
+  geom_point() +
+  mapply(
+    annotate_icon,
+    tier_df$pokemonId,
+    tier_df$Rank_in_Tier,
+    tier_df$Tier_of_Rareness,
+    1, 
+    0.3
+    ) +
+  ggtitle("Tier means how many zeros behind digit point of spawn frequency") +
+  theme_classic()
+```
+
+## 怪獸都在什麼時間出現呢？
+
+```{r sightings_hour_count}
+pm_count_by_hour %>%
+  group_by(hour_created) %>%
+  summarise(n=sum(cnt)) %>%
+  ggplot(aes(x= hour_created, y=n)) +
+  geom_bar(stat = "identity")+
+  scale_y_continuous(labels = scales::comma)+
+  ylab("Number of Sightings")
+```
+
+<aside class="note">
+- 和人類的作息差不多啊！！！
+- 這代表 Go radar 抓人類資料？
+- 代表 PokemonGo 晚上降低怪獸量？
+</aside>
+
+
+## 個別怪獸的偏好嗎？
+
+```{r freq_vs_hour, cache=TRUE}
+pm_freq_with_hour <- pm_count_by_hour %>%
+  group_by(pokemonId) %>%
+  mutate(freq= cnt/sum(cnt))
+
+plot<- pm_freq_with_hour%>%
+  ggplot(aes(
+    x=hour_created,
+    y=freq, 
+    group=pokemonId,
+    color=pokemonId))+
+  geom_point() +
+  scale_x_continuous(breaks = seq(0,23)) +
+  ylab("Sighting Frequency in Particular Hour")
+plot
+```
+
+<aside class="note">
+- 大致和人類的作息差不多
+- 上下面有特別突出的怪獸
+</aside>
+
+## 誰不合群？
+
+```{r outliers, cache=TRUE}
+top3_freq <- pm_freq_with_hour %>%
+  group_by(hour_created) %>% {
+    top <- top_n(., 3, wt = freq)
+    tail <- top_n(., -1, wt = freq)
+    bind_rows(top, tail)
+  } %>%
+  ungroup()
+
+plot +
+  mapply(
+    annotate_icon,
+    top3_freq$pokemonId,
+    top3_freq$hour_created,
+    top3_freq$freq,
+    1, 
+    0.01
+    )
+```
+
+## 聽說晚上比較抓得到鬼和皮皮？
+
+[Pokemon GO: Day & Night Affect What Pokemon You Find](http://twinfinite.net/2016/07/pokemon-go-day-night-affect-what-pokemon-find-catch/)
+
+> For example, Pokemon such as Gastly and Clefairy will only come out mainly during the late night hours, in keeping with their lore. On the other hand Pokemon like Squirtle, Bulbasaur and Charmander will wander around primarily during the day hours.
+
+<aside class="note">
+且御三家容易白天出現
+</aside>
+
+## 看圖說故事
+
+```{r gastly_and_clefairy, cache=TRUE}
+pm_freq_5 <- pm_freq_with_hour %>%
+  filter(pokemonId %in% c(1, 4, 7, 35, 92))
+
+plot+geom_vline(xintercept = 19)+mapply(
+    annotate_icon,
+    pm_freq_5$pokemonId,
+    pm_freq_5$hour_created,
+    pm_freq_5$freq,
+    .5, 
+    0.005
+    )
+```
+
+<aside class="note">
+- 網友實測：[夜間在 19:00 發生](https://www.reddit.com/r/pokemongo/comments/4rgfwd/daynight_cycle_research/) 
+- 稀有度最底層兩 tier 的怪物
+</aside>
+
+## 鬼和皮皮並沒有晚上較多
+
+```{r gastly_and_clefairy_closer, cache=TRUE}
+pm_freq_5 %>%
+  ggplot(aes(
+    x=hour_created,
+    y=freq,
+    group=pokemonId)) +
+  geom_point() +
+  geom_vline(xintercept = 19)+
+  scale_x_continuous(breaks = seq(0,23))+
+  mapply(
+    annotate_icon,
+    pm_freq_5$pokemonId,
+    pm_freq_5$hour_created,
+    pm_freq_5$freq,
+    .5, 
+    0.0025
+    )
+```
+
+
+<aside class="note">
+- 無明顯晚上出沒率高
+- 需進一步驗證
+</aside>
+
+## 皮皮晚上也沒特別的分佈
+
+```{r clefairy_distribution, cache=TRUE}
+clefairy %>%
+  select(-dup_cnt) %>%
+  mutate(
+    created = 
+      ymd_hms(created ,tz = "UTC") %>%
+      with_tz("Asia/Taipei")
+    ) %>%
+  mutate(hour_created = hour(created)) %>%
+  mutate(day_or_night = 
+           if_else(hour_created >=6 & hour_created<=18,
+                   "day","night")
+  ) %>%
+  qmplot(x= longitude, y= latitude, data = .,color = day_or_night)
+
+```
+
+---
+
+![](images/psyduck_meme.png)
+
+## 重生點？卡比獸你說說看
+
+```{r snorlax_respawn, cache=TRUE}
+snorlax_taipei <- snorlax %>%
+  filter(
+    longitude>121.415265 & latitude> 24.944514, 
+    latitude<25.093436& longitude<121.618531,
+    date(created)<"2016-08-31") %>%
+  mutate(date_created= as.factor(date(created)))
+
+plt <- function(df){
+  bb<- make_bbox(longitude,latitude, df )
+  map_layer<- get_stamenmap(bbox = bb, zoom = 13, maptype = "toner")
+  ggmap(map_layer, x=longitude, y=latitude, data= df)+
+    stat_density_2d(h=0.02,
+      data= df,
+      aes(x=longitude, y=latitude, fill = ..level..),
+      geom = "polygon",
+      alpha = .3,
+      color = NA) +
+    scale_fill_gradient2("Density",
+      low = "white", mid = "yellow", high = "red")+
+    geom_point(data=df,
+               aes(x= longitude,
+                   y=latitude,
+                   color=date_created, 
+                   alpha=0.5)
+               )+
+    theme_void()
+}
+
+plt(snorlax_taipei)
+
+```
+
+---
+
+<iframe src="snorlax_map.html" width=100% height=500px allowtransparency="true"> </iframe>
+
+## 重生點？快龍你說說看
+
+```{r dragonite_respawn, cache=TRUE}
+
+dragonite_taipei <- dragonite %>%
+  filter(
+    longitude>121.415265 & latitude> 24.944514, 
+    latitude<25.093436& longitude<121.618531,
+    date(created)<"2016-08-31") %>%
+  mutate(date_created= as.factor(date(created)))
+
+plt(dragonite_taipei)
+```
+
+---
+
+<iframe src="dragonite_map.html" width=100% height=500px allowtransparency="true"> </iframe>
+
+# Behind The Scene {data-background="images/Mecha-Meowthinator.png"}
+
+## Pouring data to BigQuery
+
+![](images/bq.png)
+
+## Handling Pokegoradar
+
+- 一堆人宣稱在台灣看到北美限定的牛
+- Pro tip: Trust no players
+- Pro pro tip: Trust only deviceId
+
+![](images/Tauros.png)
+
+## 一堆 R 視窗
+
+![](images/rstudios.png)
+
+# 未竟之業 {data-background="images/epic_fail.png"}
+
+## 還沒用到的 Pokeshop 資料
+
+```{r}
+forts %>% qmplot(x=longitude, y=latitude, data= .)
+```
+
+## 無所不在的機器人 {data-background="images/advance_bot.png"}
+
+- 台北市櫻花牌冷氣視覺化
+- 道館勢力視覺化
+
+## 還有好多問題
+
+- 實驗設計：先進化 or 先升級
+- pokeshop 與 怪獸出現率 的關係？
+- 怎樣撒花能夠聚集一波人潮？
+
+# 參考資料
+
+## 工具
+
+- Poke Radar: https://www.pokemonradargo.com
+- PokemonGo-Bot: https://github.com/PokemonGoF/PokemonGo-Bot
+- 資料集套件： 
+  - https://github.com/ChihChengLiang/pokemongor
+  - https://github.com/ChihChengLiang/pmbq
+- 可達鴨產生器： http://bit.ly/2blYbs6
+
+## 圖
+
+- 我們的研究資源: http://bulbapedia.bulbagarden.net/wiki/File:Super_Sucker.png
+- 對神奇寶貝強度感到好奇： http://rebellion.nerdfitness.com/index.php?/topic/56248-vengefulpear-goes-for-the-boulderbadge/
+- 身高體重正常嗎？: https://pbs.twimg.com/media/CoMBZivXgAA7znY.jpg
+- Handling Pokegoradar
+  - [[PMGO] 關於PMGO雷達](https://www.ptt.cc/bbs/PokeMon/M.1470491064.A.151.html)
+  - http://www.twword.com/wiki/%E8%82%AF%E6%B3%B0%E7%BE%85
+  - bigquery 抓的
+- 藍隊隊長： http://i.imgur.com/pXAaSx3.jpg
+- 北投： https://www.youtube.com/watch?v=MoYjVTbLWyo
+- Behind The Scene: http://bulbapedia.bulbagarden.net/wiki/File:Mecha-Meowthinator.png
