@@ -1,7 +1,7 @@
 ---
 title: "Gotta Research 'Em All"
 author: "Chin-Cheng Liang"
-date: "August 25, 2016"
+date: "September 1, 2016"
 output: 
   revealjs::revealjs_presentation:
     self_contained: false
@@ -544,7 +544,7 @@ plt(dragonite_taipei)
 
 ## 還沒用到的 Pokeshop 資料
 
-```{r}
+```{r unused_forts, cache=TRUE}
 forts %>% qmplot(x=longitude, y=latitude, data= .)
 ```
 
