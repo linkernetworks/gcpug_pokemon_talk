@@ -563,12 +563,14 @@ forts %>% qmplot(x=longitude, y=latitude, data= .)
 
 ## 工具
 
-- Poke Radar: https://www.pokemonradargo.com
-- PokemonGo-Bot: https://github.com/PokemonGoF/PokemonGo-Bot
+- 本投影片： https://github.com/LinkerNetworks/gcpug_pokemon_talk
 - 資料集套件： 
   - https://github.com/ChihChengLiang/pokemongor
-  - https://github.com/ChihChengLiang/pmbq
+  - https://github.com/linkernetworks/pmbq
 - 可達鴨產生器： http://bit.ly/2blYbs6
+- 資料源：
+  - Poke Radar: https://www.pokemonradargo.com
+  - PokemonGo-Bot: https://github.com/PokemonGoF/PokemonGo-Bot
 
 ## 圖
 
