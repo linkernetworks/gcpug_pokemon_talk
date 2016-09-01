@@ -1,6 +1,6 @@
 ---
 title: "Gotta Research 'Em All"
-author: "Chin-Cheng Liang"
+author: "Chih-Cheng Liang"
 date: "September 1, 2016"
 output: 
   revealjs::revealjs_presentation:
