@@ -331,7 +331,7 @@ pm_count_by_hour %>%
   ylab("Number of Sightings")
 ```
 
-<aside class="note">
+<aside class="notes">
 - 和人類的作息差不多啊！！！
 - 這代表 Go radar 抓人類資料？
 - 代表 PokemonGo 晚上降低怪獸量？
@@ -357,7 +357,7 @@ plot<- pm_freq_with_hour%>%
 plot
 ```
 
-<aside class="note">
+<aside class="notes">
 - 大致和人類的作息差不多
 - 上下面有特別突出的怪獸
 </aside>
@@ -390,7 +390,7 @@ plot +
 
 > For example, Pokemon such as Gastly and Clefairy will only come out mainly during the late night hours, in keeping with their lore. On the other hand Pokemon like Squirtle, Bulbasaur and Charmander will wander around primarily during the day hours.
 
-<aside class="note">
+<aside class="notes">
 且御三家容易白天出現
 </aside>
 
@@ -410,7 +410,7 @@ plot+geom_vline(xintercept = 19)+mapply(
     )
 ```
 
-<aside class="note">
+<aside class="notes">
 - 網友實測：[夜間在 19:00 發生](https://www.reddit.com/r/pokemongo/comments/4rgfwd/daynight_cycle_research/) 
 - 稀有度最底層兩 tier 的怪物
 </aside>
@@ -437,7 +437,7 @@ pm_freq_5 %>%
 ```
 
 
-<aside class="note">
+<aside class="notes">
 - 無明顯晚上出沒率高
 - 需進一步驗證
 </aside>
