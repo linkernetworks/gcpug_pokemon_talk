@@ -354,7 +354,7 @@ pm_count_by_hour %>%
 </aside>
 
 
-## 個別怪獸的偏好嗎？
+## 個別怪獸有出沒時間偏好嗎？
 
 ```{r freq_vs_hour}
 pm_freq_with_hour <- pm_count_by_hour %>%
@@ -400,7 +400,7 @@ plot +
     )
 ```
 
-## 聽說晚上比較抓得到鬼和皮皮？
+## 聽說晚上較好抓鬼斯和皮皮？
 
 [Pokemon GO: Day & Night Affect What Pokemon You Find](http://twinfinite.net/2016/07/pokemon-go-day-night-affect-what-pokemon-find-catch/)
 
@@ -410,7 +410,7 @@ plot +
 且御三家容易白天出現
 </aside>
 
-## 看圖說故事
+## 御三家、鬼斯和皮皮在哪？
 
 ```{r gastly_and_clefairy}
 pm_freq_5 <- pm_freq_with_hour %>%
@@ -431,7 +431,7 @@ plot+geom_vline(xintercept = 19)+mapply(
 - 稀有度最底層兩 tier 的怪物
 </aside>
 
-## 鬼和皮皮並沒有晚上較多
+## 鬼斯和皮皮晚上較多嗎
 
 ```{r gastly_and_clefairy_closer}
 pm_freq_5 %>%
@@ -458,7 +458,7 @@ pm_freq_5 %>%
 - 需進一步驗證
 </aside>
 
-## 皮皮晚上也沒特別的分佈
+## 皮皮早晚分佈有異狀嗎？
 
 ```{r clefairy_distribution}
 clefairy %>%
