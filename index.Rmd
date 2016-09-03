@@ -9,6 +9,9 @@ output:
       #in_header: libs/header.html
       after_body: libs/plugins.html
     reveal_plugins: ["notes"]
+    pandoc_args: [
+      "-H", "libs/in_head.html"
+    ]
 ---
 
 ```{r setup, include=FALSE}
