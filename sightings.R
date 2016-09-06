@@ -3,6 +3,7 @@ library(lubridate)
 library(leaflet)
 library(pmbq)
 library(htmlwidgets)
+library(pokemongor)
 
 sightings_grid_latlon_custom <- sightings_grid_latlon %>%
   mutate(log_avg_cnt = log10(avg_cnt))
@@ -32,52 +33,33 @@ map <- sightings_grid_latlon_custom %>%
 
 saveWidget(map, "sightings.html")
 
-snorlax_taipei <- snorlax %>%
-  filter(
-    longitude>121.415265 & latitude> 24.944514, 
-    latitude<25.093436& longitude<121.618531,
-    created<"2016-08-31") %>%
-  mutate(date_created= as.factor(date(created)))
-
-snorlax_icon <- makeIcon(
-  iconUrl = "icons/143.png",
-  iconWidth = 32,
-  iconHeight = 32)
-
-snorlax_map <- snorlax_taipei %>%
-  leaflet() %>%
-  addMarkers(
-    lng=~longitude,
-    lat=~latitude,
-    popup=~as.character(created),
-    icon = snorlax_icon
+makeMap<- function(pokemon_df){
+  pokemonId <- pokemon_df$pokemonId[1]
+  pokemon_name <- pokemon_names$name[pokemonId] %>% tolower()
+  taipei_df <- pokemon_df %>%
+    filter(
+      longitude>121.415265 & latitude> 24.944514, 
+      latitude<25.093436& longitude<121.618531,
+      created<"2016-08-31") %>%
+    mutate(date_created= as.factor(date(created)))
+  pokemon_icon <- makeIcon(
+    iconUrl = paste0("icons/", pokemonId, ".png"),
+    iconWidth = 32,
+    iconHeight = 32)
+  pokemon_map <- taipei_df %>%
+    leaflet() %>%
+    addMarkers(
+      lng=~longitude,
+      lat=~latitude,
+      popup=~as.character(created),
+      icon = pokemon_icon
     ) %>%
-  addTiles()%>%
-  addProviderTiles("CartoDB.Positron") 
+    addTiles()%>%
+    addProviderTiles("CartoDB.Positron") 
+  saveWidget(pokemon_map, paste0(pokemon_name, "_map.html"))
+}
 
-saveWidget(snorlax_map, "snorlax_map.html")
-
-dragonite_taipei <- dragonite %>%
-  filter(
-    longitude>121.415265 & latitude> 24.944514, 
-    latitude<25.093436& longitude<121.618531,
-    date(created)<"2016-08-31") %>%
-  mutate(date_created= as.factor(date(created)))
-
-dragonite_icon <- makeIcon(
-  iconUrl = "icons/149.png",
-  iconWidth = 32,
-  iconHeight = 32)
-
-dragonite_map <- dragonite_taipei %>%
-  leaflet() %>%
-  addMarkers(
-    lng=~longitude,
-    lat=~latitude,
-    popup=~as.character(created),
-    icon = dragonite_icon
-  ) %>%
-  addTiles()%>%
-  addProviderTiles("CartoDB.Positron") 
-
-saveWidget(dragonite_map, "dragonite_map.html")
+makeMap(lickitung)
+makeMap(chansey)
+makeMap(snorlax)
+makeMap(dragonite)
